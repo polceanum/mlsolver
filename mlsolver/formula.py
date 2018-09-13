@@ -164,7 +164,7 @@ class Implies:
         return not self.left.semantic(ks, world_to_test) or self.right.semantic(ks, world_to_test)
 
     def __eq__(self, other):
-        return self.left == other.left and self.right == other.right
+        return isinstance(other, Implies) and self.left == other.left and self.right == other.right
 
     def __str__(self):
         return "(" + self.left.__str__() + " -> " + self.right.__str__() + ")"
@@ -182,7 +182,7 @@ class Not:
         return not self.inner.semantic(ks, world_to_test)
 
     def __eq__(self, other):
-        return self.inner == other.inner
+        return isinstance(other, Not) and self.inner == other.inner
 
     def __str__(self):
         return u"\uFFE2" + str(self.inner)
@@ -201,7 +201,7 @@ class And:
         return self.left.semantic(ks, world_to_test) and self.right.semantic(ks, world_to_test)
 
     def __eq__(self, other):
-        return self.left == other.left and self.right == other.right
+        return isinstance(other, And) and ((self.left == other.left and self.right == other.right) or (self.left == other.right and self.right == other.left))
 
     def __str__(self):
         return "(" + self.left.__str__() + " " + u"\u2227" + " " + self.right.__str__() + ")"
@@ -220,7 +220,7 @@ class Or:
         return self.left.semantic(ks, world_to_test) or self.right.semantic(ks, world_to_test)
 
     def __eq__(self, other):
-        return self.left == other.left and self.right == other.right
+        return isinstance(other, Or) and ((self.left == other.left and self.right == other.right) or (self.left == other.right and self.right == other.left))
 
     def __str__(self):
         return "(" + self.left.__str__() + " " + u"\u2228" + " " + self.right.__str__() + ")"
